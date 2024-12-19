@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { CategoryService } from '../../../servies/category.service';
+import { CategoryService } from '../../../service/category.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

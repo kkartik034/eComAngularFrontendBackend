@@ -4,9 +4,10 @@ import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { CategoryService } from '../../../servies/category.service';
+import { CategoryService } from '../../../service/category.service';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { Category } from '../../../types/category';
 @Component({
   selector: 'app-categories',
   imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatButtonModule,RouterLink],
@@ -15,7 +16,7 @@ import { RouterLink } from '@angular/router';
 })
 export class CategoriesComponent {
   displayedColumns: string[] = ['id', 'name', 'action'];
-  dataSource: MatTableDataSource<any>;
+  dataSource: MatTableDataSource<Category>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -28,11 +29,15 @@ categoryService = inject(CategoryService)
   }
 
   ngOnInit(){
-    this.categoryService.getCategories().subscribe((result:any)=>{
-    
-      this.dataSource.data = result;
-         })
+    this.getServerData();
   }
+  private getServerData() {
+    this.categoryService.getCategories().subscribe((result) => {
+
+      this.dataSource.data = result;
+    });
+  }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -46,4 +51,14 @@ categoryService = inject(CategoryService)
       this.dataSource.paginator.firstPage();
     }
   }
+
+  delete(id:string){
+console.log(id);
+this.categoryService.deleteCategoryById(id).subscribe((result)=>{
+  alert('id deleted');
+  this.getServerData();
+});
+  }
+
+
 }
